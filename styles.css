@@ -1,34 +1,84 @@
-
-
 body {
-    font-family: "Poppins", sans-serif;
-    background-color: hsl(257, 86%, 35%);
+    position: relative;
+    font-family: "freight-sans-pro", Helvetica, Arial, sans-serif;
+    color: rgb(54, 52, 55);
+    background-color: #ffffff;
     height: 100vh;
 }
 
-.nav-main {
-    font-size: 2rem;
-    font-weight: 400;
-    color: rgb(132, 255, 0);
+#minimal-logo-header {
+    padding-top: 2rem;
+    padding-left: 1.75rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
 }
 
-.nav-main ul {
+#minimal-logo-header > img {
+    width: 100%;
+    height: 100%;
+}
+
+aside, #nav-main {
+    width: 100%;
+    height: 100%;
+}
+
+#sidemenu {
+    width: 300px;
+}
+
+#nav-main {
+    position: relative;
+    font-size: 1.85rem;
+    font-weight: 400;
+    color: rgb(54, 52, 55);
+}
+
+#nav-main ul {
+    position: fixed;
+    top: calc(50% - 185px);
+    left: 0;
+    padding: 0;
+    padding-left: 2rem;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 3rem;
 }
 
-.nav-main li {
+#nav-main li {
     list-style-type: none;
 }
 
-.nav-main a, .nav-main a:hover, .nav-main a:visited {
-    color: rgb(132, 255, 0);
+#nav-main li.current {
+    font-weight: 700;
+    color: #765EEB;
+}
+
+#nav-main a, #nav-main a:hover, #nav-main a:visited {
+    font-weight: 400;
+    font-style: normal;
+    color: #4B484D;
     text-decoration: none;
 }
 
-.nav-main a:hover {
-    text-decoration: underline;
+#nav-main a:hover {
+    font-weight: 700;
+    font-style: italic;
+}
+
+#nav-main .hover-circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+
+}
+
+#nav-main .hover-circle > circle {
+    
 }
 
 h1 {
@@ -39,15 +89,14 @@ h1 {
 
 p {
     font-weight: 300;
-    color: white;
     max-width: 500px;
 }
 
-.container-centered {
+.container-main {
     display: flex;
-    width: 100%;
+    width: 100vw;
     height: 100%;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: space-between;
+    flex-direction: row;
 }
