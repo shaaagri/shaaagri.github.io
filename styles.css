@@ -96,7 +96,7 @@ aside, #nav-main {
     color: #555456;
     background-size: 200% 100%;
     background-position: 100% 0;
-    background-image: linear-gradient(to left, transparent, transparent 50%, #765EEB 50%,#765EEB);
+    background-image: linear-gradient(to left, transparent, transparent 50.1%, #765EEB 50%,#765EEB);
     text-decoration: none;
 }
 
