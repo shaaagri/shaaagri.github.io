@@ -28,7 +28,10 @@ function navMenuSetCurrent(itemId) {
     else itemHome.setAttribute('href', "#");
 
     if (itemVisualizations !== newCurrentItem) itemVisualizations.setAttribute('href', "javascript:loadPage(visualizationsPage, 'nav-main-item-visualizations')");
-    else itemVisualizations.setAttribute('href', "#");
+    else {
+        itemVisualizations.setAttribute('href', "#");
+        renderVisualizations();
+    }
 }
 
 loadPage(homePage, "nav-main-item-home");

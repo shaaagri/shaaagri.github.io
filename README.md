@@ -2,7 +2,7 @@
 
 ## Purpose of the Website
 
-This website is intended to be a first draft for a possible future portfolio that would assist job search and personal online representation.
+This website was conceived to be a first draft for a possible future portfolio that would assist job search and personal online representation, but its most immediate purpose is to store visualizations completed for IAT 355 Introduction to Visual Analytics course.
 
 ## Technologies Used
 
@@ -14,4 +14,5 @@ The website is written in pure HTML5/CSS3 with a bit of vanilla JavaScript to al
 - https://codepen.io/ianfarb/pen/nPaxYR - The sliding effect in the navgiation menu
 - https://www.w3schools.com/css/css_tooltip.asp - Used for the logo
 - https://stackoverflow.com/questions/17636528/how-do-i-load-an-html-page-in-a-div-using-javascript - Used to implement the dynamic page loading
-- vis.js - copied from the assignment materials
+- **vis.js** - copied from the assignment materials
+- https://palettemaker.com/rainbow-colors - Hex codes for the rainbow colors used in SVG visualization #2

@@ -168,7 +168,7 @@ main {
 
 #welcome-banner h2 {
     padding-top: 1rem;
-    padding-bottom: 3rem;
+    padding-bottom: 4rem;
     font-size: 1.75rem;
     line-height: 2.9rem;
 }
@@ -189,7 +189,7 @@ main {
 
 .section-heading {
     margin-top: 0.6rem;
-    padding-top: 4.5rem;
+    padding-top: 4.66rem;
     padding-bottom: 0.63rem;
     font-family: 'barricada-pro', serif;
 }
@@ -291,4 +291,17 @@ ul.tag-cloud > li {
     border: 1px solid rgb(84, 81, 86);
     border-radius: 10px;
     padding: 0.1rem 0.5rem;
+}
+
+.no-top-padding {
+    padding-top: 0;
+}
+
+.no-bottom-padding {
+    padding-bottom: 0;
+}
+
+#vis-2 {
+    transform: translate(165px, -40px) scale(1.6);
+    padding-bottom: 85px;
 }
