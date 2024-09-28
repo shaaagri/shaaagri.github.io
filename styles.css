@@ -302,6 +302,6 @@ ul.tag-cloud > li {
 }
 
 #vis-2 {
-    transform: translate(165px, -40px) scale(1.6);
+    transform: translate(165px, -10px) scale(1.6);
     padding-bottom: 85px;
 }
