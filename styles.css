@@ -274,6 +274,33 @@ main {
     transition: all 0.1s ease-in;
 }
 
+.contacts-icons {
+    display: flex;
+    margin-left: -2px;
+    gap: 0.8rem;
+    opacity: 0.8;
+}
+
+.contacts-icons .icon {
+    width: 40px;
+    height: 40px;
+}
+
+.contacts-icons .icon > img {
+    width: 100%;
+    height: 100%;
+}
+
+.contacts-icons .icon.linkedin > img {
+    width: 98%;
+    height: 98%;
+}
+
+.contacts-icons .icon.facebook > img {
+    width: 95%;
+    height: 95%;
+}
+
 ul.tag-cloud {
     display: flex;
     padding-top: 0.33rem;
