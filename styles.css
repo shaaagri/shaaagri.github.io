@@ -69,13 +69,13 @@ aside, #nav-main {
 
 #nav-main ul {
     position: fixed;
-    top: calc(50% - 175px);
+    top: calc(50% - 160px);
     left: 0;
     padding: 0;
     padding-left: 2.2rem;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2.7rem;
 }
 
 #nav-main li {
@@ -83,12 +83,13 @@ aside, #nav-main {
     list-style-type: none;
 }
 
-#nav-main li.current {
+#nav-main a.current {
     font-family: 'barricada-pro', serif;
     color: #765EEB;
+    cursor: default;
 }
 
-#nav-main a, #nav-main a:hover, #nav-main a:visited {
+#nav-main a, #nav-main a:not(.current):hover, #nav-main a:not(.current):visited {
     height: 2rem;
     font-weight: 400;
     font-style: normal;
@@ -99,7 +100,7 @@ aside, #nav-main {
     text-decoration: none;
 }
 
-#nav-main a:hover {
+#nav-main a:not(.current):hover {
     font-family: 'barricada-pro', serif;
     background-position: 0 0;
     transition: background-position 0.15s ease-out;
