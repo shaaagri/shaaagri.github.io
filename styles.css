@@ -6,6 +6,16 @@ body {
     height: 100vh;
 }
 
+article img {
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+}
+
+article p {
+    max-width: 800px;
+}
+
 #logo {
     padding-top: 2.3rem;
     padding-left: 2.3rem;

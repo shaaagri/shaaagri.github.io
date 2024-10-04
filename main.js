@@ -1,5 +1,6 @@
 const homePage = "homepage.html";
 const visualizationsPage = "visualizations.html";
+const a3Page = "a3.html";
 
 async function fetchHtmlAsText(url) {
     return await (await fetch(url)).text();
@@ -8,6 +9,7 @@ async function fetchHtmlAsText(url) {
 async function loadPage(page, navMenuItemId) {
     const rootDiv = document.getElementById("root");
     rootDiv.innerHTML = await fetchHtmlAsText(page);
+    //setInnerHTML(rootDiv, await fetchHtmlAsText(page));
 
     navMenuSetCurrent(navMenuItemId);
 }
@@ -18,9 +20,11 @@ function navMenuSetCurrent(itemId) {
 
     const itemHome = document.getElementById('nav-main-item-home');
     const itemVisualizations = document.getElementById('nav-main-item-visualizations');
+    const itemA3 = document.getElementById('nav-main-item-a3');
 
     itemHome.classList.remove('current');
     itemVisualizations.classList.remove('current');
+    itemA3.classList.remove('current');
 
     newCurrentItem.classList.add('current');   
 
@@ -32,6 +36,16 @@ function navMenuSetCurrent(itemId) {
         itemVisualizations.setAttribute('href', "#");
         renderVisualizations();
     }
+
+    if (itemA3 !== newCurrentItem) itemA3.setAttribute('href', "/a3.html");
+    else itemA3.setAttribute('href', "#");
 }
 
+const pathname = window.location.pathname;
+
+if (pathname == '/a3.html')
+{
+
+}
+else
 loadPage(homePage, "nav-main-item-home");
