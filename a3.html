@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>A3 Intro to Vega-Lite</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite-api@5.6.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-tooltip"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://use.typekit.net/yly5gvg.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <script>  
+         const options = {
+           config: {
+             // Vega-Lite default configuration
+           },
+           init: (view) => {
+             // initialize tooltip handler
+             view.tooltip(new vegaTooltip.Handler().call);
+           },
+           view: {
+             // view constructor options
+             // remove the loader if you don't want to default to vega-datasets!
+             loader: vega.loader({
+               baseURL: "https://cdn.jsdelivr.net/npm/vega-datasets@2/",
+             }),
+             renderer: "canvas",
+           },
+         };
+   
+         // register vega and vega-lite with the API
+         vl.register(vega, vegaLite, options);
+    </script>
+</head>
+
+<body>
+    <div class="container-main">
+        <header id="logo">
+            <img src="assets/i//logo_splash.png" alt="logo that looks like a cartoonish blob" />
+        </header>
+
+        <aside id="sidemenu">
+            <nav id="nav-main">
+                <ul>
+                    <a id="nav-main-item-home" href="index.html"><li>home</li></a>
+                    <a id="nav-main-item-visualizations" href="javascript:loadPage(visualizationsPage, 'nav-main-item-visualizations')"><li>visualizations</li></a>
+                    <a id="nav-main-item-a3" class="current" href="#"><li>a3</li></a>
+                    <a href="#"><li>blog</li></a>
+                    <a href="#"><li>about</li></a>
+                </ul>
+            </nav>
+        </aside>
+
+        <main id="root">
+            <header id="welcome-banner">
+                <h1>Assignment 3 - Intro to Vega-Lite</h1>
+            </header>
+            
+            <article>
+                <section class="no-bottom-padding">
+                    <h1 class="section-heading">1. Describe the Data</h1>
+
+                    <h2>Summary Table</h1>
+                    <img src="assets/i/a3/part1/summary.png" style="max-width: 700px;"/>
+
+                    <br/><br/>
+                    <h2>Data Types in the Dataset</h2>
+                    <img src="assets/i/a3/part1/data_types.png" style="max-width: 600px;"/>
+
+                    <br/><br/>
+                    <h2>Summary of Key Statistics</h2>
+                    <img src="assets/i/a3/part1/summary_of_key_stats.png" style="max-width: 600px;"/>
+
+                    <p>Summarizing the sales part, it can be said Wii Sports is bestseller almost everywhere but in Japan market which is dominated by Pokemon-themed titles. Super Mario themed games, Tetris, GTA series are also leaders. Nintendo as the publisher dominates in terms of sold copies of games, even in North America. The distributions of sales are very right-skewed - very few games become the bestsellers, the mean in global sales is 500000 copies, orders of magnitude less than the top result of 82 million.</p>
+                </section>
+
+                <section>
+                    <h1 class="section-heading">2. Create 4 Visual Explorations Using Vega-Lite</h1>
+
+                    <h2>Visualization 1: Global Sales by Genre and Platform</h2>
+                    <div id="vis1a" style="width: 800px; height: 480px"></div>
+                    <div id="vis1b" style="width: 800px; height: 480px"></div>
+
+                    <h2>Visualization 2: Sales Over Time by Platform and Genre</h2>
+                    <div id="vis2a" style="width: 800px; height: 480px"></div>
+                    <div id="vis2b" style="width: 800px; height: 480px"></div>
+
+                    <h2>Visualization 3: Regional Sales vs. Platform</h2>
+                    <div id="vis3" style="width: 800px; height: 480px"></div>
+
+                    <br/><br/>
+                    <h2>Visualization 4: Tell Us a Visual Story</h2>
+                    <h3>How Japanese and North American Video Game Publishers Fought For Industry Dominance Over Time</h3>
+                    <div id="vis4" style="width: 800px; height: 480px"></div>
+                </section>
+
+                
+            </article>
+
+            <script>
+                async function render() {
+                    // load data
+                    const data = await d3.csv("./datasets/a3/videogames_wide.csv");
+                
+                    //
+                    const vis1aSpec = vl
+                        .markTick({color: 'slateblue'})
+                        .data(data)
+                        .encode(
+                            vl.y().fieldN('Genre'),
+                            vl.x().fieldQ('Global_Sales').aggregate('sum'),
+                            vl.tooltip().fieldN('Name')
+                        )
+                        .width("container")
+                        .height(400)
+                        .toSpec();
+                
+                    let view = await vegaEmbed("#vis1a", vis1aSpec);
+                    view.view.run();
+
+                    const vis1bSpec = vl
+                        .markBar({color: 'slateblue'})
+                        .data(data)
+                        .encode(
+                            vl.x().fieldQ('Global_Sales').aggregate('sum'),
+                            vl.y().fieldN('Platform').sort('-x'),
+                            vl.tooltip().fieldN('Platform')
+                        )
+                        .width("container")
+                        .height(400)
+                        .toSpec();
+                
+                    view = await vegaEmbed("#vis1b", vis1bSpec);
+                    view.view.run();
+
+                    //
+                    const vis2aSpec = vl
+                        .markArea({interpolate: 'monotone'})
+                        .data(data)
+                        .transform(
+                            vl.filter("datum.Year != 'N/A'"),
+                            vl.filter("datum.Genre != 'Misc'")
+                        )
+                        .encode(
+                            vl.x().fieldN('Year'),
+                            vl.y().fieldQ('Global_Sales').aggregate('sum'),
+                            vl.color().fieldN('Genre').scale({scheme: 'spectral'}),
+                            vl.tooltip().fieldN('Genre')
+                        )
+                        .width("container")
+                        .height(600)
+                        .toSpec();
+                
+                    view = await vegaEmbed("#vis2a", vis2aSpec);
+                    view.view.run();
+
+                    //
+                    const vis2bSpec = vl
+                        .markArea({interpolate: 'monotone'})
+                        .data(data)
+                        .transform(
+                            vl.filter("datum.Year != 'N/A'"),
+                            vl.aggregate(vl.sum('Global_Sales').as('Platform_Sales')).groupby(['Platform', 'Year']),
+                            vl.window(vl.rank().as('Platform_Rank')).sort(vl.field('Platform_Sales').order('descending')),
+                            vl.filter("datum.Platform_Rank <= 110"),
+                        )
+                        .encode(
+                            vl.x().fieldN('Year'),
+                            vl.y().fieldQ('Platform_Sales'),
+                            vl.color().fieldN('Platform').scale({scheme: 'category20'}),
+                            vl.tooltip().fieldN('Platform')
+                        )
+                        .width("container")
+                        .height(600)
+                        .toSpec();
+                
+                    view = await vegaEmbed("#vis2b", vis2bSpec);
+                    view.view.run();
+
+                    //
+                    const vis3Spec = vl
+                        .markBar({color: 'slateblue'})
+                        .data(data)
+                        .encode(
+                            vl.y().fieldN('Platform').sort('-x'),
+                            vl.x().fieldQ(vl.repeat("repeat")).aggregate('sum')
+                        )
+                        .width(300)
+                        .height(500)
+                        .repeat(["NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales"])
+                        .columns(2)
+                        .toSpec();
+                
+                    view = await vegaEmbed("#vis3", vis3Spec);
+                    view.view.run();
+
+                     //
+                     const vis4Spec = vl
+                        .markLine()
+                        .data(data)
+                        .transform(
+                            vl.filter("datum.Year != 'N/A'"),
+                            vl.calculate("(datum.Publisher == 'Nintendo' || datum.Publisher == 'Sony Computer Entertainment' || datum.Publisher == 'Namco Bandai Games' || datum.Publisher == 'Konami Digital Entertainment' || datum.Publisher == 'Sega' || datum.Publisher == 'Atari') ? 'Japan' : (datum.Publisher == 'Activision' || datum.Publisher == 'Electronic Arts' || datum.Publisher == 'Ubisoft' || datum.Publisher == 'THQ' || datum.Publisher == 'Take-Two Interactive' || datum.Publisher == 'Warner Bros. Interactive Entertainment') ? 'North America' : 'Other'").as('Publisher_Region'),
+                            vl.aggregate(vl.sum('Global_Sales').as('Publisher_Global_Sales')).groupby(['Publisher_Region', 'Year']),
+                            vl.filter("datum.Publisher_Region != 'Other'")
+                        )
+                        .encode(
+                            vl.y().fieldQ("Publisher_Global_Sales"),
+                            vl.x().fieldN("Year"),
+                            vl.color().fieldN("Publisher_Region"),
+                        )
+                        .width(700)
+                        .height(400)
+                        .toSpec();
+                
+                    view = await vegaEmbed("#vis4", vis4Spec);
+                    view.view.run();
+                }
+
+                render();
+            </script>
+        </main>
+        
+    </div>
+</body>
+
+<script src="main.js"></script>
+<script src="vis.js"></script>
+</html>
