@@ -86,18 +86,23 @@
                     <h1 class="section-heading">2. Create 4 Visual Explorations Using Vega-Lite</h1>
 
                     <h2>Visualization 1: Global Sales by Genre and Platform</h2>
-                    <div id="vis1a" style="width: 800px; height: 480px"></div>
+                    <h4>(Capped at 40 million sales total)</h4>
+                    <div id="vis1a" style="width: 800px; height: 390px"></div>
                     <div id="vis1b" style="width: 800px; height: 480px"></div>
+                    <div id="vis1c" style="width: 800px; height: 600px"></div>
 
                     <h2>Visualization 2: Sales Over Time by Platform and Genre</h2>
-                    <div id="vis2a" style="width: 800px; height: 480px"></div>
-                    <div id="vis2b" style="width: 800px; height: 480px"></div>
+                    <div id="vis2a" style="width: 800px; height: 680px"></div>
+                    <div id="vis2b" style="width: 800px; height: 680px"></div>
+                    <div id="vis2c" style="width: 1000px; height: 480px"></div>
+                    <br/><br/>
 
                     <h2>Visualization 3: Regional Sales vs. Platform</h2>
                     <div id="vis3" style="width: 800px; height: 480px"></div>
 
-                    <br/><br/>
+                    <br/><br/><br/>
                     <h2>Visualization 4: Tell Us a Visual Story</h2>
+                    <br/>
                     <h3>How Japanese and North American Video Game Publishers Fought For Industry Dominance Over Time</h3>
                     <div id="vis4" style="width: 800px; height: 480px"></div>
                 </section>
@@ -108,27 +113,43 @@
             <script>
                 async function render() {
                     // load data
-                    const data = await d3.csv("./datasets/a3/videogames_wide.csv");
+                    const videogames_data = await d3.csv("./datasets/a3/videogames_wide.csv");
                 
                     //
                     const vis1aSpec = vl
-                        .markTick({color: 'slateblue'})
-                        .data(data)
-                        .encode(
-                            vl.y().fieldN('Genre'),
-                            vl.x().fieldQ('Global_Sales').aggregate('sum'),
-                            vl.tooltip().fieldN('Name')
-                        )
-                        .width("container")
-                        .height(400)
-                        .toSpec();
+                        .layer(
+                            vl.markTick({color: 'slateblue', opacity:0.5})
+                                .data(videogames_data)
+                                .transform(
+                                    vl.filter('datum.Global_Sales < 40')
+                                )
+                                .encode(
+                                    vl.y().fieldN('Genre'),
+                                    vl.x().fieldQ('Global_Sales'),
+                                    vl.tooltip(['Name', 'Genre', 'Global_Sales', 'Year']),
+                                    vl.color().fieldN('Genre'),
+
+                                ), 
+                            
+                            vl.markText()
+                                .data(videogames_data)
+                                .transform(
+                                    vl.filter('datum.Global_Sales > 29 && datum.Global_Sales < 40')
+                                )
+                                .encode(
+                                    vl.y().fieldN('Genre'),
+                                    vl.x().fieldQ('Global_Sales'),
+                                    vl.text().fieldN('Name'),
+                                )
+                            )
+                        .width(800).height(300).toSpec();
                 
                     let view = await vegaEmbed("#vis1a", vis1aSpec);
                     view.view.run();
 
                     const vis1bSpec = vl
                         .markBar({color: 'slateblue'})
-                        .data(data)
+                        .data(videogames_data)
                         .encode(
                             vl.x().fieldQ('Global_Sales').aggregate('sum'),
                             vl.y().fieldN('Platform').sort('-x'),
@@ -141,10 +162,25 @@
                     view = await vegaEmbed("#vis1b", vis1bSpec);
                     view.view.run();
 
+                    const vis1cSpec = vl
+                        .markCircle({color: 'slateblue'})
+                        .data(videogames_data)
+                        .encode(
+                            vl.x().fieldN('Platform'),
+                            vl.y().fieldN('Genre'),
+                            vl.size().fieldQ('Global_Sales'),
+                        )
+                        .width("container")
+                        .height(480)
+                        .toSpec();
+
+                    view = await vegaEmbed("#vis1c", vis1cSpec);
+                    view.view.run();
+
                     //
                     const vis2aSpec = vl
                         .markArea({interpolate: 'monotone'})
-                        .data(data)
+                        .data(videogames_data)
                         .transform(
                             vl.filter("datum.Year != 'N/A'"),
                             vl.filter("datum.Genre != 'Misc'")
@@ -165,7 +201,7 @@
                     //
                     const vis2bSpec = vl
                         .markArea({interpolate: 'monotone'})
-                        .data(data)
+                        .data(videogames_data)
                         .transform(
                             vl.filter("datum.Year != 'N/A'"),
                             vl.aggregate(vl.sum('Global_Sales').as('Platform_Sales')).groupby(['Platform', 'Year']),
@@ -181,14 +217,33 @@
                         .width("container")
                         .height(600)
                         .toSpec();
-                
+
                     view = await vegaEmbed("#vis2b", vis2bSpec);
+                    view.view.run();
+
+                    // 
+                    const vis2cSpec = vl.markCircle({color: 'slateblue'})
+                        .data(videogames_data)
+                            .transform(
+                                vl.filter("datum.Year != 'N/A'"),
+                            )
+                            .encode(
+                                vl.x().fieldN('Year'),
+                                vl.y().fieldN('Platform'),
+                                vl.size().fieldQ('Global_Sales'),
+                                vl.tooltip(['Platform', 'Genre'])
+                            )
+                            .width("container")
+                        .height('600')
+                        .toSpec();
+                
+                    view = await vegaEmbed("#vis2c", vis2cSpec);
                     view.view.run();
 
                     //
                     const vis3Spec = vl
                         .markBar({color: 'slateblue'})
-                        .data(data)
+                        .data(videogames_data)
                         .encode(
                             vl.y().fieldN('Platform').sort('-x'),
                             vl.x().fieldQ(vl.repeat("repeat")).aggregate('sum')
@@ -204,8 +259,8 @@
 
                      //
                      const vis4Spec = vl
-                        .markLine()
-                        .data(data)
+                        .markLine({point: true, tooltip: true})
+                        .data(videogames_data)
                         .transform(
                             vl.filter("datum.Year != 'N/A'"),
                             vl.calculate("(datum.Publisher == 'Nintendo' || datum.Publisher == 'Sony Computer Entertainment' || datum.Publisher == 'Namco Bandai Games' || datum.Publisher == 'Konami Digital Entertainment' || datum.Publisher == 'Sega' || datum.Publisher == 'Atari') ? 'Japan' : (datum.Publisher == 'Activision' || datum.Publisher == 'Electronic Arts' || datum.Publisher == 'Ubisoft' || datum.Publisher == 'THQ' || datum.Publisher == 'Take-Two Interactive' || datum.Publisher == 'Warner Bros. Interactive Entertainment') ? 'North America' : 'Other'").as('Publisher_Region'),
@@ -213,11 +268,16 @@
                             vl.filter("datum.Publisher_Region != 'Other'")
                         )
                         .encode(
-                            vl.y().fieldQ("Publisher_Global_Sales"),
+                            vl.y({title: 'Global Sales by Publisher Origin (millions)', stroke: 'red'}).fieldQ("Publisher_Global_Sales"),
                             vl.x().fieldN("Year"),
-                            vl.color().fieldN("Publisher_Region"),
+                            vl.color({scale: {range: ['crimson', 'darkblue']}, title: 'Publisher Origin'}).fieldN("Publisher_Region"),
+                            vl.tooltip([
+                                {field : "Year", type : "nominal"},
+                                {field : "Publisher_Region", title: "Publisher Origin" },
+                                {field : "Publisher_Global_Sales", title: "Global Sales This Year" }
+                            ]),
                         )
-                        .width(700)
+                        .width(900)
                         .height(400)
                         .toSpec();
                 
